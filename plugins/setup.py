@@ -11,6 +11,7 @@ PACKAGE_NAME = "flytekitplugins-parent"
 SOURCES = {
     "flytekitplugins-athena": "flytekit-aws-athena",
     "flytekitplugins-awssagemaker": "flytekit-aws-sagemaker",
+    "flytekitplugins-sagemakerprocessing": "flytekit-aws-sagemakerprocessing",
     "flytekitplugins-bigquery": "flytekit-bigquery",
     "flytekitplugins-fsspec": "flytekit-data-fsspec",
     "flytekitplugins-dolt": "flytekit-dolt",
