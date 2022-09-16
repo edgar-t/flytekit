@@ -2,7 +2,7 @@ import os
 from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
-from typing import Any, List, Dict
+from typing import Any, List, Dict, Optional
 
 from dataclasses_json import dataclass_json
 from sagemaker.processing import Processor, ProcessingInput, ProcessingOutput
@@ -49,11 +49,13 @@ class ProcessingJobOutput(object):
 @dataclass_json
 @dataclass
 class ProcessingJobResourceConfig(object):
-    instance_count:int
+    instance_count: int
     instance_type: str
     role: str
     image_uri: str
-    volume_size_in_gb:int
+    volume_size_in_gb: int
+    max_runtime_in_seconds: Optional[int]
+    in_curalate_vpc: bool
 
 @dataclass_json
 @dataclass
@@ -123,6 +125,7 @@ class SagemakerProcessingJobTask(PythonInstanceTask[SagemakerProcessingJobConfig
             volume_size_in_gb=self.task_config.processing_job_resource_config.volume_size_in_gb,
             entrypoint=None,
             env=self.task_config.app_specification.environment,
+            max_runtime_in_seconds=self.task_config.processing_job_resource_config.max_runtime_in_seconds,
             network_config=NetworkConfig(enable_network_isolation=False,
                                          security_group_ids=["sg-2789ff41"],
                                          subnets=["subnet-027ebaf55db6b3d9b",
@@ -131,7 +134,7 @@ class SagemakerProcessingJobTask(PythonInstanceTask[SagemakerProcessingJobConfig
                                                   "subnet-085cda37990d2de62",
                                                   "subnet-a0fefd8b",
                                                   "subnet-600fbb5d"
-                                                  ])
+                                                  ]) if self.task_config.processing_job_resource_config.in_curalate_vpc else None
         )
         job_inputs = [ProcessingInput(input_name=x.name, destination=x.local_path, source=x.s3_uri) for x in
                       kwargs.get("inputs")] if kwargs.get("inputs") and type(kwargs.get("inputs")) is not str else []
