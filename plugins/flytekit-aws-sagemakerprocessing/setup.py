@@ -4,7 +4,7 @@ PLUGIN_NAME = "sagemakerprocessing"
 
 microlib_name = f"flytekitplugins-{PLUGIN_NAME}"
 
-plugin_requires = ["flytekit>=1.1.0b0,<1.2.0", "sagemaker-training>=3.6.2,<4.0.0", "sagemaker>=2.106.0"]
+plugin_requires = ["flytekit>=1.1.0b0,<1.2.0", "sagemaker>=2.106.0"]
 
 __version__ = "0.0.0+develop"
 
